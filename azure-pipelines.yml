@@ -58,7 +58,7 @@ stages:
 
           - task: AzureFunctionApp@1
             inputs:
-              azureSubscription: 'leesa9019432'
+              azureSubscription: 'leesamakwana9019432'
               appName: 'leesamakwana9019432'
               package: '$(Pipeline.Workspace)/function-app/function-app.zip'
             displayName: 'Deploy Function to Azure'
