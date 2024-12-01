@@ -1,0 +1,64 @@
+stages:
+  - stage: Build
+    displayName: 'Build Stage'
+    jobs:
+      - job: Build
+        displayName: 'Build the Function App'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: |
+              curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+            displayName: 'Install Node.js'
+
+          - script: |
+              npm install --legacy-peer-deps
+            displayName: 'Install Dependencies'
+
+          - script: |
+              npm run build
+            displayName: 'Run Build Step'
+
+          - script: |
+              zip -r $(Build.ArtifactStagingDirectory)/function-app.zip .
+            displayName: 'Package Function App'
+
+          - publish: $(Build.ArtifactStagingDirectory)/function-app.zip
+            artifact: function-app
+            displayName: 'Publish Artifact'
+
+  - stage: Test
+    displayName: 'Test Stage'
+    jobs:
+      - job: Test
+        displayName: 'Run Unit Tests'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: |
+              npm install --legacy-peer-deps
+            displayName: 'Install Dependencies for Test Stage'
+
+          - script: |
+              npx jest
+            displayName: 'Run Tests'
+
+  - stage: Deploy
+    displayName: 'Deploy to Azure'
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy Function to Azure'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - download: current
+            artifact: function-app
+            displayName: 'Download Artifact'
+
+          - task: AzureFunctionApp@1
+            inputs:
+              azureSubscription: 'leesa9019432'
+              appName: 'leesamakwana9019432'
+              package: '$(Pipeline.Workspace)/function-app/function-app.zip'
+            displayName: 'Deploy Function to Azure'

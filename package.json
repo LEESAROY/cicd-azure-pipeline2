@@ -1,0 +1,37 @@
+{
+    "name": "azure-function-app",
+    "version": "1.0.0",
+    "description": "A simple Azure Function App",
+    "main": "index.js",
+    "scripts": {
+      "build": "echo 'No build step defined for now.'",
+      "start": "func start",
+      "test": "jest",
+      "test:clear-cache": "npx jest --clearCache"
+    },
+    "dependencies": {
+      "azure-functions-core-tools": "^3.0.0",
+      "node-mocks-http": "^1.16.1",
+      "uuid": "^8.0.0"
+    },
+    "devDependencies": {
+      "@types/jest": "^29.5.14",
+      "jest": "^29.7.0",
+      "ts-jest": "^29.2.5"
+    },
+    "engines": {
+      "node": "16.x"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/LEESAROY/cicd-azure-pipeline"
+    },
+    "keywords": [
+      "azure",
+      "functions",
+      "node"
+    ],
+    "author": "Leesa",
+    "license": "MIT"
+  }
+  
